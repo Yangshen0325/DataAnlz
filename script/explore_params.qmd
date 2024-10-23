@@ -72,8 +72,8 @@ ggplot(parameter_grid, aes(x = mutualist_present, y = gamma_i, color = factor(al
        x = "Mutualist Present",
        y = "Immigration Rate (gamma_i)",
        color = "Alpha") +
-  scale_y_continuous(limits = c(0.000, 0.010)) +
-  geom_hline(yintercept = 0.008, linewidth = 1.2, color = "black") +
+  scale_y_continuous(limits = c(0.000, gamma_P0)) +
+  geom_hline(yintercept = gamma_P0, linewidth = 1.2, color = "black") +
   theme_minimal()
 ```
 
