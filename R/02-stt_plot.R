@@ -1,13 +1,56 @@
 
 
-# combine all plots (16), total --------------------------------------------------
-rm(list = ls())
-library(patchwork)
-library(tidyverse)
-library(rlang)
+#' This function creates a plot combining all plots under 16 scenarios
+#'
+#' @param path Path that has the data
+#' @param show_legend Show the legend or not
+#'
+#' @return A 16 combined plot
+#' @export
+#'
+create_plot <- function(path, show_legend) {
+
+  list_all <- readRDS(file.path(path, "list_all.rds"))
+
+  # Filter and process the data
+  total <- list_all |>
+    filter(Type == "total_dat")
+  total$Group <- factor(total$Group, levels = c("None", "Low", "Medium", "High"))
 
 
-# Function for plot
+  # endemic species
+  # endemics <- list_all |>
+  #   filter(Type == "endemic_dat")
+  # endemics$Group <- factor(endemics$Group, levels = c("None", "Low", "Medium", "High"))
+
+  # Create the plot
+  p <- crt_stt_plot(data = total,
+                    x_var = "Time",
+                    y_var = "Median",
+                    q25_var = "Q0.25",
+                    q75_var = "Q0.75",
+                    color_var = "Group",
+                    fill_var = "Group",
+                    show_legend = show_legend)
+
+  return(p)
+}
+
+
+
+#' This function is doing stt plot for only one scenario, e.g. high_cura
+#'
+#' @param data A list contains all median, q25, q75 information
+#' @param x_var X-axis
+#' @param y_var Y-axis
+#' @param q25_var Quantile 25
+#' @param q75_var Quantile 75
+#' @param color_var Values for colors
+#' @param fill_var Values for fill
+#' @param show_legend Show legend or not
+#'
+#' @return A ggplot
+
 crt_stt_plot <- function(data, x_var, y_var, q25_var, q75_var,
                          color_var = NULL, fill_var = NULL,
                          show_legend= NULL) {
@@ -39,34 +82,5 @@ crt_stt_plot <- function(data, x_var, y_var, q25_var, q75_var,
 
   return(p)
 
-}
-
-# Define the function to create a plot from a given path
-create_plot <- function(path, show_legend) {
-
-  list_all <- readRDS(file.path(path, "list_all.rds"))
-
-  # Filter and process the data
-  total <- list_all |>
-    filter(Type == "total_dat")
-  total$Group <- factor(total$Group, levels = c("None", "Low", "Medium", "High"))
-
-
-  # endemic species
-  # endemics <- list_all |>
-  #   filter(Type == "endemic_dat")
-  # endemics$Group <- factor(endemics$Group, levels = c("None", "Low", "Medium", "High"))
-
-  # Create the plot
-  p <- crt_stt_plot(data = total,
-                    x_var = "Time",
-                    y_var = "Median",
-                    q25_var = "Q0.25",
-                    q75_var = "Q0.75",
-                    color_var = "Group",
-                    fill_var = "Group",
-                    show_legend = show_legend)
-
-  return(p)
 }
 

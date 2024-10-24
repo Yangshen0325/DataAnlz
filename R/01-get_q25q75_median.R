@@ -20,12 +20,69 @@
 
 # `format_island_mutual_all.R` is for formatting data for both plant and animal species,
 # and we will choose the one with `sample_freq` for an organised data output for plotting.
-rm(list = ls())
-library(tidyverse)
 
 
-# Get the median q25 q75 list for one dataset -----------------------------
+# Get the list for all dataset --------------------------------------------
 
+
+
+#' This function collects stt data (median, q25, q75) across different levels of mutualism and save the data
+#'
+#' @param data_files Data need to be handled
+#' @param path Path storing data
+#' @param total_time Island age (simulation time)
+#' @param sample_freq For formatting
+#' @param M0 Mainland matrix
+#' @param verbose
+#'
+#' @return A list listing all median, q25, q75 infomattion
+#' @export
+#'
+get_all_lists <- function(data_files, path, total_time, sample_freq, M0, verbose) {
+  # Initialize an empty list to store results
+  result_list <- list()
+
+  # Define the corresponding group labels for each dataset
+  group_labels <- c("None", "Low", "Medium", "High")
+
+  # Loop through each file and process the dataset
+  for (i in seq_along(data_files)) {
+    # Construct full path to the dataset
+    file_path <- file.path(path, data_files[i])
+
+    # Load the dataset
+    island_replicates <- readRDS(file_path)
+
+    # Process the dataset using the `get_list` function
+    infolist <- get_list(island_replicates, total_time, sample_freq, M0, verbose)
+
+    # Convert infolist to a data frame if it's not already
+    infolist_df <- bind_rows(infolist, .id = 'Type')
+    infolist_df$Group <- group_labels[i]
+
+    # Append the result to the list
+    result_list[[i]] <- infolist_df
+  }
+
+  # Bind all data frames together by rows
+  list_all <- do.call(rbind, result_list)
+
+  saveRDS(list_all, file = paste0(path, "list_all.rds"))
+}
+
+
+# Get the median q25 q75 list of one dataset -----------------------------
+
+
+#' This function gets the edian q25 q75 list of one data set, e.g. data only for none-mutualism case
+#'
+#' @param island_replicates "Raw" simulation output from `sim_core_mutualism`, not being fomatted yet
+#' @param total_time island age (simulation time)
+#' @param sample_freq For fomatting
+#' @param M0 Mainland mutualistic matrix
+#' @param verbose
+#'
+#' @return A list
 
 get_list <- function(island_replicates,
                      total_time,
@@ -111,38 +168,3 @@ get_list <- function(island_replicates,
 }
 
 
-# Get the list for all dataset --------------------------------------------
-
-
-
-get_all_lists <- function(data_files, path, total_time, sample_freq, M0, verbose) {
-  # Initialize an empty list to store results
-  result_list <- list()
-
-  # Define the corresponding group labels for each dataset
-  group_labels <- c("None", "Low", "Medium", "High")
-
-  # Loop through each file and process the dataset
-  for (i in seq_along(data_files)) {
-    # Construct full path to the dataset
-    file_path <- file.path(path, data_files[i])
-
-    # Load the dataset
-    island_replicates <- readRDS(file_path)
-
-    # Process the dataset using the `get_list` function
-    infolist <- get_list(island_replicates, total_time, sample_freq, M0, verbose)
-
-    # Convert infolist to a data frame if it's not already
-    infolist_df <- bind_rows(infolist, .id = 'Type')
-    infolist_df$Group <- group_labels[i]
-
-    # Append the result to the list
-    result_list[[i]] <- infolist_df
-  }
-
-  # Bind all data frames together by rows
-  list_all <- do.call(rbind, result_list)
-
-  saveRDS(list_all, file = paste0(path, "list_all.rds"))
-}

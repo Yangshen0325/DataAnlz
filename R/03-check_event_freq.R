@@ -4,6 +4,19 @@
 # Extract `evo_table`
 # `evo_table[, 1]` : time series until the `total_time`
 # `evo_table[, 2]` : event happening at the specific `time_value`
+
+
+
+
+
+#' This function visualizes the events frequency across all simulations
+#'
+#' @param the_data Data being handled
+#'
+#' @return A ggplot
+#' @export
+#'
+
 plot_event_freq <- function(the_data) {
 
   # Initialize a list to store the frequency of each number in the second column
