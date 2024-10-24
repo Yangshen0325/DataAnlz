@@ -2,4 +2,5 @@
 
 export(create_plot)
 export(get_all_lists)
+export(get_sr_info)
 export(plot_event_freq)
