@@ -1,5 +1,5 @@
 # List of all paths
-path_1 <- "~/Downloads/phd_yang/chapter2/DataAnlz/script/"
+path_1 <- "script/"
 path_2 <- "mu1_0/"
 
 all_paths <- c(paste0(path_1, path_2, "laa1_0lambda0_0/"),
@@ -55,7 +55,8 @@ combined_plot <- wrap_plots(all_plots, ncol = 4, nrow = 4) +
                                             size = 12,
                                             face = "bold"))
   )
-ggsave("~/Downloads/phd_yang/chapter2/when_I_Explore/16plot_mu1_0_K1_052080_alpha50_gam016.png",
-       plot = combined_plot, width = 20, height = 20, dpi = 300)
+
+# ggsave("~/Downloads/phd_yang/chapter2/when_I_Explore/16plot_mu1_0_K1_052080_alpha50_gam016.png",
+#        plot = combined_plot, width = 20, height = 20, dpi = 300)
 
 

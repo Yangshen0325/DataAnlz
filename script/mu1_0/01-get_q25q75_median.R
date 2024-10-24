@@ -4,7 +4,7 @@
 M0 <- readRDS("~/Downloads/phd_yang/chapter2/formal_v1/codeNdata/mu1_0/M0.rds")
 
 # List of all paths
-path_1 <- "~/Downloads/phd_yang/chapter2/DataAnlz/script/"
+path_1 <- "script/"
 path_2 <- "mu1_0/"
 
 all_paths <- c(paste0(path_1, path_2, "laa1_0lambda0_0/"),
