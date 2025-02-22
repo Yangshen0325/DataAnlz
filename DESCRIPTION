@@ -15,4 +15,5 @@ Imports:
     patchwork,
     rlang,
     scales,
-    RColorBrewer
+    RColorBrewer,
+    dplyr

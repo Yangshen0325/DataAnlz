@@ -55,7 +55,7 @@ N_P <- 0
 
 # Define a range of mutualist_present values and alpha values
 mutualist_present_values <- seq(0, 100, by = 10)
-alpha_values <- c(10, 20, 50, 100)
+alpha_values <- c(10, 20, 50, 100, 1000)
 
 # Generate all combinations of mutualist_present and alpha 
 parameter_grid <- expand.grid(mutualist_present = mutualist_present_values, alpha = alpha_values)
@@ -77,20 +77,20 @@ ggplot(parameter_grid, aes(x = mutualist_present, y = gamma_i, color = factor(al
   theme_minimal()
 ```
 
-Suppose plant species have mutualistic partners (namely animal species) varying from 0 to 100 present on the island, and with a fixed initial carrying capacity, a smaller $\alpha$ makes a closer and more flat line to the maximum immigration rate $\gamma_0$ . We want to save some room for mutualism effects, so we will keep it "large", e.g. two times to $K_{P0}$ . I chose $\alpha$ 100, $K_{P0}$ 50, because I want to leave more room for mutualism to kick in.
+Suppose plant species have mutualistic partners (namely animal species) varying from 0 to 100 present on the island, and with a fixed initial carrying capacity, a smaller $\alpha$ makes a closer and more flat line to the maximum immigration rate $\gamma_0$ . We want to save some room for mutualism effects, so we will keep it "large", e.g. two times to $K_{P0}$ . I chose $\alpha$ 100, $K_{P0}$ 50, because I want to leave more room for mutualism.
 
 2.  Suppose $K_{P0}$ is 50, $\alpha$ is 100, we check how does $K_{P1}$ affect $\gamma_i$. x-axis is the mutualistic partners ALREADY present on the island.
 
     ```{r}
     # Set fixed parameters
-    gamma_P0 <- 0.008  # Initial and maximum immigration rate
+    gamma_P0 <- 0.016  # Initial and maximum immigration rate
     K_P0 <- 50       # Initial carrying capacity
     alpha <- 100
     N_P <- 0        # Number of present plant species
 
     # Set varying parameters 
-    K_P1_values <- c(0, 1, 5, 25, 50, 200, 800)  
-    m_values <- seq(0, 100, by = 10)    # present mutalists
+    K_P1_values <- c(0, 10, 100)  
+    m_values <- seq(0, 50, by = 5)    # present mutalists
 
     # Create a data frame to store results
     results <- expand.grid(m_values = m_values, K_P1 = K_P1_values) %>%
@@ -106,7 +106,7 @@ Suppose plant species have mutualistic partners (namely animal species) varying 
            x = 'mutualists partners present',
            y = 'γ_i',
            color = 'K_P1') +
-      scale_y_continuous(limits = c(0, 0.01)) +
+      scale_y_continuous(limits = c(0, gamma_P0 + 0.01)) +
       theme_minimal()
     ```
 
